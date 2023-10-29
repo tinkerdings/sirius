@@ -1,3 +1,3 @@
 @echo off
 
-remedybg build\perlin.exe
+start remedybg build\win32_sword.exe

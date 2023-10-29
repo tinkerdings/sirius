@@ -1,8 +1,11 @@
 @echo off
 
 mkdir build
+attrib +r build\*.gitignore
+del /S /Q build\*
+attrib -r build\*.gitignore
 pushd build
 
-cl -FC -Zi ..\perlin.cpp user32.lib gdi32.lib
+cl -FC -Zi ..\win32_sword.cpp user32.lib gdi32.lib
 
 popd

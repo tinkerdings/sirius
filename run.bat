@@ -1,3 +1,3 @@
 @echo off
 
-build\perlin.exe
+build\win32_sword.exe
