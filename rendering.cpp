@@ -1,5 +1,4 @@
 #include <stdint.h>
-#include <string.h>
 
 struct BlitBuffer;
 

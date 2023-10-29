@@ -11,6 +11,7 @@
 
 #include <windows.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <math.h>
 
 namespace Sword
@@ -259,6 +260,11 @@ namespace Sword
     Rect square = {squareX, squareY, squareX + squareWidth, squareY + squareHeight};
     Color squareColor = {255, 64, 64, 255};
 
+    LARGE_INTEGER timestampLast;
+    QueryPerformanceCounter(&timestampLast);
+    LARGE_INTEGER timeFreq;
+    QueryPerformanceFrequency(&timeFreq);
+
     while(!window->quit)
     {
       MSG message;
@@ -284,6 +290,15 @@ namespace Sword
       square.x1 = square.x0 + squareWidth;
       square.y1 = square.y0 + squareHeight;
       radius = window->height / 4;
+
+      LARGE_INTEGER timestampNow;
+      QueryPerformanceCounter(&timestampNow);
+      int64_t msPerFrame = (1000 * (timestampNow.QuadPart - timestampLast.QuadPart)) / timeFreq.QuadPart;
+      char buffer[256] = {};
+      wsprintf(buffer, "ms: %d\n", msPerFrame);
+      OutputDebugStringA(buffer);
+
+      timestampLast = timestampNow;
     }
   }
 }
