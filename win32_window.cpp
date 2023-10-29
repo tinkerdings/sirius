@@ -284,7 +284,7 @@ namespace Sword
       renderFilledSquare(&window->blitBuffer.buffer, square, squareColor);
       win32_blit(&window->blitBuffer);
 
-      t -= 0.01;
+      t -= 0.1;
       square.x0 = radius * cosf(t) + (((float)window->width / 2.0) - (squareWidth / 2.0));
       square.y0 = radius * sinf(t) + (((float)window->height / 2.0) - (squareHeight / 2.0));
       square.x1 = square.x0 + squareWidth;

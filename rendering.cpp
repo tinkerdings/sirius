@@ -23,7 +23,7 @@ namespace Sword
     };
   };
 
-  static void 
+  inline static void 
   renderWeirdGradient(BlitBuffer *buffer)
   {
     static int blueOffset = 0;
@@ -46,7 +46,7 @@ namespace Sword
     greenOffset++;
   }
 
-  static void 
+  inline static void 
   renderClear(BlitBuffer *buffer, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
   {
     uint8_t *row = (uint8_t *)buffer->memory;
@@ -64,7 +64,7 @@ namespace Sword
     }
   }
 
-  static void 
+  inline static void 
   renderFilledSquare(BlitBuffer *buffer, Rect rect, Color color)
   {
     int width = rect.x1 - rect.x0;
