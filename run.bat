@@ -1,3 +1,3 @@
 @echo off
 
-build\win32_sword.exe
+build\win32_sirius.exe

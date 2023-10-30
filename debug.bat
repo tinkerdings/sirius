@@ -1,3 +1,3 @@
 @echo off
 
-start remedybg build\win32_sword.exe
+start remedybg build\win32_sirius.exe

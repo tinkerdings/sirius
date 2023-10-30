@@ -1,11 +1,11 @@
 /*
- * SWORD - SoftWare Only Renderer Deluxe.
+ * sirius - cross platform software rendering game framework
  *
  * Created by Nandromeda.
  * 
  * 2023
  *
- * win32_sword.cpp
+ * win32_sirius.cpp
  * 
  */
 
@@ -21,8 +21,8 @@ int CALLBACK WinMain(
     LPSTR cmdArgs,
     int showCmd)
 {
-  Sword::Win32_Window *window = Sword::win32_createWindow(instance, "SWORD", 800, 600);
-  Sword::win32_run(window);
+  Sirius::Win32_Window *window = Sirius::win32_createWindow(instance, "Sirius", 800, 600);
+  Sirius::win32_run(window);
 
   return 0;
 }

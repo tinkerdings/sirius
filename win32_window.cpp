@@ -1,5 +1,5 @@
 /*
- * SWORD - SoftWare Only Renderer Deluxe.
+ * sirius
  *
  * Created by Nandromeda.
  * 
@@ -14,7 +14,7 @@
 #include <stdint.h>
 #include <math.h>
 
-namespace Sword
+namespace Sirius
 {
   struct Win32_BlitBuffer;
   struct Win32_Window;
@@ -282,6 +282,9 @@ namespace Sword
       renderClear(&window->blitBuffer.buffer, 0, 0, 255, 30);
       renderWeirdGradient(&window->blitBuffer.buffer);
       renderFilledSquare(&window->blitBuffer.buffer, square, squareColor);
+      renderPixel(&window->blitBuffer.buffer, 32, 32, {255, 255, 0, 255});
+      renderLine(&window->blitBuffer.buffer, 100, 100, 300, 200, {255, 0, 0, 255});
+
       win32_blit(&window->blitBuffer);
 
       t -= 0.01;
