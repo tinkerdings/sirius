@@ -47,6 +47,15 @@ namespace Sirius
   };
 
   static void 
+  renderClear(BlitBuffer *buffer, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha);
+  static void 
+  renderWeirdGradient(BlitBuffer *buffer);
+  static void 
+  renderFilledSquare(BlitBuffer *buffer, Rect rect, Color color);
+  static inline void
+  renderPixel(BlitBuffer *buffer, int x, int y, Color color);
+
+  static void 
   renderWeirdGradient(BlitBuffer *buffer)
   {
     static int blueOffset = 0;
@@ -120,63 +129,41 @@ namespace Sirius
   static void
   renderLine(BlitBuffer *buffer, int x0, int y0, int x1, int y1, Color color) 
   {
-    int sx = 0;
-    int sy = 0;
-    int dx = x1 - x0; dx = (dx < 0) ? (-dx) : (dx);
-    int dy = y1 - y0; dy = (dy < 0) ? (dy) : (-dy);
+    // y = mx + b
+    //
+    // m = dy/dx
+    // dy = (y1 - y0)
+    // dx = (x1 - x0)
+    // 
+    // y = (dy/dx)x + b
+    // (dx)y = (dy)x + (dx)b
+    // 0 = (dy)x - (dx)y + (dx)b
+    // 0 = Ax + By + C
+    // A = dy
+    // B = -dx
+    // C = (dx)b
+    //
+    // 0 = (y1 - y0)x - (x1 - x0)y + (x1 - x0)b
+    // 
+    // y = mx + b
+    // b = y - mx
+    // set x and y to x0 and y0 and solve b
+    // b = y0 - ((y1 - y0)/(x1 - x0))x0
+    // b = y0 - (x0y1 - x0y0)/(x1 - x0)
+    // b = (x1y0-x0y0)-(x0y1-x0y0)
+    // b = x1y0-x0y0-x0y1-x0y0
+    // b = y0(x1-x0-x0)-x0y1
+    // b = y0(x1-2x0)-x0y1
 
-    if(dx < 0)
-    {
-      dx = -dx;
-      sx = -1;
-    }
-    else
-    {
-      sx = 1;
-    }
+    int sy = y0;
 
-    if(dy < 0)
-    {
-      sy = -1;
-    }
-    else
-    {
-      dy = -dx;
-      sy = 1;
-    }
-
-    int e = dx + dy;
-
-    {
-      do
-      {
-        renderPixel(buffer, x0, y0, color);
-        if((x0 == x1) && (y0 == y1))
-        {
-          break;
-        }
-
-        int e2 = e+e;
-        if(e2 >= dy)
-        {
-          if(x0 == x1)
-          {
-            break;
-          }
-          e += dy;
-          x0 += sx;
-        }
-        if(e2 <= dx)
-        {
-          if(y0 == y1)
-          {
-            break;
-          }
-          e += dx;
-          y0 += sy;
-        }
-      } 
-      while(1);
-    }
+    int dx = x1 - x0;
+    int dy = y1 - y0;
+    int b = (y0 * (x1 - x0 - x0)) - (x0 * y1);
+    renderPixel(buffer, x0, y0, color);
+    /* for(int sx = x0; sx <= x1; ++sx) */
+    /* { */
+    /*   if(dy * sx - dx * (sy + 0. */ 
+    /* } */
   }
 } // END namespace Sirius

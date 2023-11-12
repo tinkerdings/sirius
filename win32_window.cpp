@@ -18,6 +18,7 @@ namespace Sirius
 {
   struct Win32_BlitBuffer;
   struct Win32_Window;
+  struct CommonGameData;
 
   static void
     win32_initBlitBuffer(Win32_BlitBuffer *buffer, HDC destDC, int width, int height);
@@ -246,24 +247,11 @@ namespace Sirius
     return window;
   }
 
-
   static void
   win32_run(Win32_Window *window)
   {
-
-    float squareWidth = 80.0;
-    float squareHeight = 80.0;
-    float radius = window->height / 4;
-    float t = 0.0;
-    float squareX = radius * cosf(t) + (((float)window->width / 2.0) - (squareWidth / 2.0));
-    float squareY = radius * sinf(t) + (((float)window->height / 2.0) - (squareHeight / 2.0));
-    Rect square = {squareX, squareY, squareX + squareWidth, squareY + squareHeight};
-    Color squareColor = {255, 64, 64, 255};
-
-    LARGE_INTEGER timestampLast;
-    QueryPerformanceCounter(&timestampLast);
-    LARGE_INTEGER timeFreq;
-    QueryPerformanceFrequency(&timeFreq);
+    commonGameData.blitBuffer = &window->blitBuffer.buffer;
+    gamestates[GAMESTATE_INIT].run = gamestateInit;
 
     while(!window->quit)
     {
@@ -279,30 +267,10 @@ namespace Sirius
         DispatchMessage(&message);
       }
 
-      renderClear(&window->blitBuffer.buffer, 0, 0, 255, 30);
-      renderWeirdGradient(&window->blitBuffer.buffer);
-      renderFilledSquare(&window->blitBuffer.buffer, square, squareColor);
-      renderPixel(&window->blitBuffer.buffer, 32, 32, {255, 255, 0, 255});
-      renderLine(&window->blitBuffer.buffer, 100, 100, 300, 200, {255, 0, 0, 255});
+      update();
 
       win32_blit(&window->blitBuffer);
-
-      t -= 0.01;
-      square.x0 = radius * cosf(t) + (((float)window->width / 2.0) - (squareWidth / 2.0));
-      square.y0 = radius * sinf(t) + (((float)window->height / 2.0) - (squareHeight / 2.0));
-      square.x1 = square.x0 + squareWidth;
-      square.y1 = square.y0 + squareHeight;
-      radius = window->height / 4;
-
-      LARGE_INTEGER timestampNow;
-      QueryPerformanceCounter(&timestampNow);
-      int64_t msPerFrame = (1000 * (timestampNow.QuadPart - timestampLast.QuadPart)) / timeFreq.QuadPart;
-      char buffer[256] = {};
-      wsprintf(buffer, "ms: %d\n", msPerFrame);
-      OutputDebugStringA(buffer);
-
-      timestampLast = timestampNow;
     }
   }
-}
+} // namespace Sirius
 

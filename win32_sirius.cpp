@@ -12,10 +12,14 @@
 #include <stdint.h>
 
 #include "blitBuffer.h"
+#include "commonGameData.h"
 #include "rendering.cpp"
+#include "state.cpp"
+#include "sirius.cpp"
 #include "win32_window.cpp"
 
-int CALLBACK WinMain(
+int 
+CALLBACK WinMain(
     HINSTANCE instance,
     HINSTANCE prevInstance,
     LPSTR cmdArgs,
