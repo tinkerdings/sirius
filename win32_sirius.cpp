@@ -1,22 +1,9 @@
-/*
- * sirius - cross platform software rendering game framework
- *
- * Created by Nandromeda.
- * 
- * 2023
- *
- * win32_sirius.cpp
- * 
- */
-
 #include <stdint.h>
+#include <windows.h>
 
-#include "blitBuffer.h"
-#include "commonGameData.h"
-#include "rendering.cpp"
-#include "state.cpp"
-#include "sirius.cpp"
-#include "win32_window.cpp"
+#include "Time/Platform/Win32/win32_time.cpp"
+#include "Window/Platform/Win32/win32_window.cpp"
+#include "Gamestate/gamestate.cpp"
 
 int 
 CALLBACK WinMain(
@@ -25,9 +12,27 @@ CALLBACK WinMain(
     LPSTR cmdArgs,
     int showCmd)
 {
-  Sirius::Win32_Window *window = Sirius::win32_createWindow(instance, "Sirius", 800, 600);
-  Sirius::win32_run(window);
+  Sirius::Time::init();
+  Sirius::Window::Win32_Window *window = Sirius::Window::win32_createWindow(instance, "Sirius", 800, 600);
+  Sirius::Gamestate::gamestates[GAMESTATE_INIT].run = gamestateInit;
+
+  while(!window->quit)
+  {
+    MSG message;
+    while(PeekMessageA(&message, 0, 0, 0, PM_REMOVE))
+    {
+      if(message.message == WM_QUIT)
+      {
+        window->quit = true;
+        PostQuitMessage(0);
+      }
+      TranslateMessage(&message);
+      DispatchMessage(&message);
+    }
+
+    Sirius::updateAndRender(&window->blitBuffer.buffer);
+    Sirius::Window::win32_blit(&window->blitBuffer);
+  }
 
   return 0;
 }
-

@@ -1,7 +1,7 @@
 namespace Sirius
 {
-  void update()
+  void updateAndRender(BlitBuffer buffer)
   {
-    gamestates[gamestateTypeCurrent].run();
+    Gamestate::gamestates[gamestateTypeCurrent].run();
   }
 } // namespace Sirius
